@@ -13,7 +13,7 @@ const tickStyle = {
 };
 
 const rotatorStyle = {
-  transition: "transform 0.5s",
+  transitionProperty: "transform",
   position: "absolute",
   left: "0",
   top: "0",
@@ -27,7 +27,7 @@ const pieceStyle = {
 };
 
 const Tick = props => {
-  const { value, height, range, className, currentClassName, hiddenClassName } = props;
+  const { duration, value, height, range, className, currentClassName, hiddenClassName } = props;
   const index = range.indexOf(value);
 
   return (
@@ -38,7 +38,7 @@ const Tick = props => {
       >
         {value}
       </span>
-      <span style={{...rotatorStyle, transform: `translateY(${height * index * -1}px)`}} >
+      <span style={{...rotatorStyle, transform: `translateY(${height * index * -1}px)`, transitionDuration: duration}} >
         {range.map((v, i) => {
           return (
             <span
@@ -74,7 +74,7 @@ class Ticker extends Component {
   }
 
   render() {
-    const { children, text, textClassName, currentClassName, hiddenClassName } = this.props;
+    const { children, duration, text, textClassName, currentClassName, hiddenClassName } = this.props;
     const { height } = this.state;
 
     return (
@@ -92,6 +92,7 @@ class Ticker extends Component {
             );
           return (
             <Tick
+              duration={duration}
               range={numberRange}
               className={textClassName}
               currentClassName={currentClassName}
@@ -116,6 +117,7 @@ Ticker.propTypes = {
 
 Ticker.defaultProps = {
   currentClassName: 'currentTicker',
+  duration: '0.5s',
   hiddenClassName: 'hiddenTicker',
 }
 
